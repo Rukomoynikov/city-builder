@@ -1,0 +1,32 @@
+body {
+  margin: 0px;
+  padding: 0px;
+}
+#app {
+  margin: 0px auto;
+  width: 900px;
+}
+.ControlPanel {
+  vertical-align: top;
+  display: inline-block;
+  padding: 20px;
+}
+.CityBuildings {
+  margin-right: 20px;
+  padding: 20px;
+  display: inline-block;
+  width: 600px;
+  vertical-align: top;
+}
+.Building {
+  display: inline-block;
+  padding: 10px;
+  border: 1px dashed #c7c7c7;
+  margin-right: 10px;
+}
+.Control {
+  margin-bottom: 10px;
+}
+h4 {
+  border-bottom: 1px solid #000;
+}

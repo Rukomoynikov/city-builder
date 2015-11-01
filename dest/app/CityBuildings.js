@@ -1,7 +1,8 @@
 var CityBuildings = React.createClass({displayName: "CityBuildings",
     getInitialState : function(){
         return {
-            buildings : this.props.buildings
+            buildings : this.props.buildings,
+            messages : this.props.messages
         }
     },
     render: function(){
@@ -10,9 +11,12 @@ var CityBuildings = React.createClass({displayName: "CityBuildings",
               React.createElement(Building, {name: element.name, key: element.id, cost: element.cost, have: element.have, build: this.props.build, id: element.id})
           )
       }.bind(this))
-        return (    
+        return (
           React.createElement("div", {className: "CityBuildings"}, 
             React.createElement("h4", null, "Город"), 
+            React.createElement("div", null, 
+                React.createElement(MessagePanel, {messages: this.props.messages})
+            ), 
             buildings
           )
         )

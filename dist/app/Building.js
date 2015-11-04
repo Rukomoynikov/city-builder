@@ -12,7 +12,8 @@ var Building = React.createClass({displayName: "Building",
         React.createElement("br", null), 
         "В наличии: ", this.props.have, 
         React.createElement("br", null), React.createElement("br", null), React.createElement("br", null), 
-        React.createElement("button", {onClick: this.sendToParent}, "Построить")
+        React.createElement("button", {onClick: this.sendToParent}, "Построить"), 
+        React.createElement("input", {type: "text"})
       )
     )
 },

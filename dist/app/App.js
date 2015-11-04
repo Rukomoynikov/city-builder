@@ -1,56 +1,5 @@
 Parse.initialize("OhVWSWcLTb3KrSdHFXKbDawVCKVLyeE63tEusAdQ", "fgfPJ0vlpewRJp0TXEUKpYC2aYkILjNFfd1QbbHO");
 
-var buildings = [
-    {
-        id : 1,
-        name : "Дом",
-        cost : 1000,
-        have : 0
-    },
-    {
-        id : 2,
-        name : "Ферма",
-        cost : 1000,
-        have : 0
-    },
-    {
-        id : 3,
-        name : "Таверна",
-        cost : 1000,
-        have : 0
-    },
-    {
-        id : 4,
-        name : "Космопорт",
-        cost : 1000,
-        have : 0
-    },
-    {
-        id : 5,
-        name : "Библиотека",
-        cost : 1000,
-        have : 0
-    },
-]
-
-var messages = [
-    {
-        id : "hunger",
-        text : "Жители города голодают, прирост населения остановлен и количество людей уменьшается на 10% каждый год. Постройте фермы.",
-        mood : "bad"
-    },
-    {
-        id : "placeless",
-        text : "Новым жителям негде жить, прирост населения остановлен. Постройте больше новых домов.",
-        mood : "bad"
-    },
-    {
-        id : "letterfromfuture",
-        text : "Ваш город посетили гости из будущего и увеличли прирост населения на 1%. Как им это удалось?",
-        mood : "good"
-    }
-]
-
 var App = React.createClass({displayName: "App",
   getInitialState : function(){
       return {
@@ -61,12 +10,14 @@ var App = React.createClass({displayName: "App",
           year : Lockr.get('year') || 2015,
           hunger : Lockr.get('hunger') || false,
           placeless : Lockr.get('placeless') || false,
-          messages : []
+          messages : Lockr.get('messages') || [],
+          tabs : tabs
       }
   },
   render: function(){
     return (
       React.createElement("div", null, 
+        React.createElement(Tabs, {tabs: this.state.tabs}), 
         React.createElement(CityBuildings, {buildings: this.state.buildings, build: this.build, messages: this.state.messages}), 
         React.createElement(ControlPanel, {population: this.state.population, food: this.state.food, gold: this.state.gold, nextDay: this.nextDay}), 
         React.createElement("hr", null), 
@@ -76,17 +27,17 @@ var App = React.createClass({displayName: "App",
   },
   nextDay : function(){
       Lockr.set("food", this.state.food - this.state.population + (this.state.buildings[1].have * 1000) );
+      var hunger;
+      var placeless;
       if (this.state.food <= 0){
-          this.state.messages.push(messages[0]);
-          this.setState({
-              messages : this.state.messages
-          })
+          this.addOrRemoveMessage("add", messages[0]);
+      } else {
+          this.addOrRemoveMessage("remove", messages[0]);
       }
       if (this.state.buildings[0].have < Math.round(this.state.population / 1000) ) {
-          this.state.messages.push(messages[1]);
-          this.setState({
-              messages : this.state.messages
-          })
+          this.addOrRemoveMessage("add", messages[1]);
+      } else {
+          this.addOrRemoveMessage("remove", messages[1]);
       }
       Lockr.set("population", this.state.population + 100);
       Lockr.set("gold", this.state.gold + this.state.population);
@@ -95,6 +46,17 @@ var App = React.createClass({displayName: "App",
           gold : this.state.gold + this.state.population,
           food : this.state.food - this.state.population + (this.state.buildings[1].have * 1000)
       })
+  },
+  addOrRemoveMessage : function(action, message){
+      if (action === "add") {
+          if (!this.state.messages.some(function(elem){return elem.id === message.id})) {
+              this.state.messages.push(message)
+          }
+      } else {
+          this.state.messages.pop(message)
+      }
+
+      Lockr.set("messages", this.state.messages)
   },
   build : function(idOfBuilding){
       var filteredBuildings = this.state.buildings.map(function(element){
@@ -123,7 +85,8 @@ var App = React.createClass({displayName: "App",
           population: 1000,
           food: 1000,
           gold : 1000,
-          buildings: buildings
+          buildings: buildings,
+          messages : []
       })
   }
 });

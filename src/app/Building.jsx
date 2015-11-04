@@ -13,6 +13,7 @@ var Building = React.createClass({
         В наличии: {this.props.have}
         <br /><br /><br />
         <button onClick={this.sendToParent}>Построить</button>
+        <input type='text' />
       </div>
     )
 },

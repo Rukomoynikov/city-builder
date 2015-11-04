@@ -13,10 +13,7 @@ var CityBuildings = React.createClass({displayName: "CityBuildings",
       }.bind(this))
         return (
           React.createElement("div", {className: "CityBuildings"}, 
-            React.createElement("h4", null, "Город"), 
-            React.createElement("div", null, 
-                React.createElement(MessagePanel, {messages: this.props.messages})
-            ), 
+            React.createElement(MessagePanel, {messages: this.props.messages}), 
             buildings
           )
         )

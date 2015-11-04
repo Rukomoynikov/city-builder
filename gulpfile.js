@@ -1,17 +1,21 @@
 var gulp = require('gulp');
+var rename = require('gulp-rename');
 var react = require('gulp-react');
 var jade = require('gulp-jade');
 var stylus = require('gulp-stylus');
 
 var paths = {
-    DEST : "./dest",
+    DEST : "./dist",
     SRC : "./src"
 }
 
 gulp.task("transform", function(){
     'use strict';
-    gulp.src(paths.SRC + '/app/*.js')
+    gulp.src(paths.SRC + '/app/*.jsx')
         .pipe(react())
+        .pipe(rename(function(file){
+            file.extname = ".js"
+        }))
         .pipe(gulp.dest(paths.DEST + '/app/'))
 });
 
@@ -31,7 +35,7 @@ gulp.task('stylus', function(){
 
 gulp.task('watch', function(){
     // APP
-    gulp.watch(paths.SRC + '/app/*.js', ['transform']);
+    gulp.watch(paths.SRC + '/app/*.jsx', ['transform']);
     gulp.watch(paths.SRC + '/*.jade', ['jade']);
     gulp.watch(paths.SRC + '/css/*.styl', ['stylus']);
 })

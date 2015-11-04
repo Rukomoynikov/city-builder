@@ -13,10 +13,7 @@ var CityBuildings = React.createClass({
       }.bind(this))
         return (
           <div className='CityBuildings'>
-            <h4>Город</h4>
-            <div>
-                <MessagePanel messages={this.props.messages} />
-            </div>
+            <MessagePanel messages={this.props.messages} />
             {buildings}
           </div>
         )

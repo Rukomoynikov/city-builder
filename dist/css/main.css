@@ -24,6 +24,11 @@ body {
   border: 1px dashed #c7c7c7;
   margin: 0px 13px 10px 0px;
 }
+.Building input {
+  width: 20px;
+  margin-left: 10px;
+  border-radius: 3px;
+}
 .Control {
   margin-bottom: 10px;
 }
@@ -35,4 +40,18 @@ body {
 }
 h4 {
   border-bottom: 1px solid #000;
+}
+.Tab {
+  display: inline-block;
+  margin-right: 20px;
+  padding: 0.4rem 2rem;
+  cursor: pointer;
+  border: 1px solid #c7c7c7;
+}
+.Tab:hover {
+  background: #c7c7c7;
+  transition: 0.3s all;
+}
+.Tab--active {
+  background: #c7c7c7;
 }

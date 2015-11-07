@@ -1,5 +1,6 @@
 Parse.initialize("OhVWSWcLTb3KrSdHFXKbDawVCKVLyeE63tEusAdQ", "fgfPJ0vlpewRJp0TXEUKpYC2aYkILjNFfd1QbbHO");
 
+
 var App = React.createClass({displayName: "App",
   getInitialState : function(){
       return {
@@ -29,15 +30,21 @@ var App = React.createClass({displayName: "App",
       Lockr.set("food", this.state.food - this.state.population + (this.state.buildings[1].have * 1000) );
       var hunger = (this.state.food <= 0);
       var placeless = (this.state.buildings[0].have < Math.round(this.state.population / 1000));
-
+      var populationAdding = (function(){
+        if (hunger || placeless) {
+            return 0
+        } else {
+            return parseInt(this.state.population / 10);
+        }
+      }.bind(this))()
 
       this.addOrRemoveMessage(hunger ?  "add" : "remove", messages[0]);
       this.addOrRemoveMessage(placeless ? "add" : "remove", messages[1]);
 
-      Lockr.set("population", this.state.population + (placeless ? 0 : 100) );
+      Lockr.set("population", this.state.population + populationAdding);
       Lockr.set("gold", this.state.gold + this.state.population);
       this.setState({
-          population : this.state.population + parseInt(this.state.population / 10),
+          population : this.state.population + populationAdding,
           gold : this.state.gold + this.state.population,
           food : this.state.food - this.state.population + (this.state.buildings[1].have * 1000)
       })

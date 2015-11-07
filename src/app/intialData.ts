@@ -1,4 +1,6 @@
-var buildings = [
+/// <reference path="../../typings/initialData.d.ts" />
+
+var buildings : Building[] = [
     {
         id : 1,
         name : "Дом",
@@ -31,7 +33,7 @@ var buildings = [
     },
 ]
 
-var messages = [
+var messages : Message[] = [
     {
         id : "hunger",
         text : "Жители города голодают, прирост населения остановлен и количество людей уменьшается на 10% каждый год. Постройте фермы.",

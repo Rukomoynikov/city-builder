@@ -12,15 +12,18 @@ var App = React.createClass({
           hunger : Lockr.get('hunger') || false,
           placeless : Lockr.get('placeless') || false,
           messages : Lockr.get('messages') || [],
-          tabs : tabs
+          tabs : tabs,
+          peoples : peoples 
       }
   },
   render: function(){
     return (
       <div>
-        <Tabs tabs={this.state.tabs} />
-        <CityBuildings buildings={this.state.buildings} build={this.build} messages={this.state.messages}/>
-        <ControlPanel population={this.state.population} food={this.state.food} gold={this.state.gold} nextDay={this.nextDay} />
+        <Tabs tabs={this.state.tabs} enableTab={this.enableTab} />
+        <CityBuildings buildings={this.state.buildings} build={this.build} messages={this.state.messages} active={true} />
+        <ControlPanel population={this.state.population} food={this.state.food} gold={this.state.gold} nextDay={this.nextDay} active={true} />
+        <Peoples active={false} peoples={this.state.peoples} />
+        <PeoplesControlPanel active={false} />
         <hr />
         <button onClick={this.startNewGame}>Начать новую игру</button>
       </div>
@@ -90,6 +93,9 @@ var App = React.createClass({
           buildings: buildings,
           messages : []
       })
+  },
+  enableTab : function(id){
+    
   }
 });
 

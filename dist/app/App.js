@@ -12,15 +12,18 @@ var App = React.createClass({displayName: "App",
           hunger : Lockr.get('hunger') || false,
           placeless : Lockr.get('placeless') || false,
           messages : Lockr.get('messages') || [],
-          tabs : tabs
+          tabs : tabs,
+          peoples : peoples 
       }
   },
   render: function(){
     return (
       React.createElement("div", null, 
-        React.createElement(Tabs, {tabs: this.state.tabs}), 
-        React.createElement(CityBuildings, {buildings: this.state.buildings, build: this.build, messages: this.state.messages}), 
-        React.createElement(ControlPanel, {population: this.state.population, food: this.state.food, gold: this.state.gold, nextDay: this.nextDay}), 
+        React.createElement(Tabs, {tabs: this.state.tabs, enableTab: this.enableTab}), 
+        React.createElement(CityBuildings, {buildings: this.state.buildings, build: this.build, messages: this.state.messages, active: true}), 
+        React.createElement(ControlPanel, {population: this.state.population, food: this.state.food, gold: this.state.gold, nextDay: this.nextDay, active: true}), 
+        React.createElement(Peoples, {active: false, peoples: this.state.peoples}), 
+        React.createElement(PeoplesControlPanel, {active: false}), 
         React.createElement("hr", null), 
         React.createElement("button", {onClick: this.startNewGame}, "Начать новую игру")
       )
@@ -90,6 +93,9 @@ var App = React.createClass({displayName: "App",
           buildings: buildings,
           messages : []
       })
+  },
+  enableTab : function(id){
+    
   }
 });
 

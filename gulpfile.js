@@ -19,7 +19,7 @@ gulp.task("transform", function(){
         }))
         .pipe(gulp.dest(paths.DEST + '/app/'))
     gulp.src(paths.SRC + '/app/*.ts')
-        .pipe(ts())
+        .pipe(ts()) 
         .pipe(rename(function(file){
             file.extname = ".js"
         }))
@@ -42,6 +42,7 @@ gulp.task('stylus', function(){
 
 gulp.task('copyRequiredFiles', function(){
     gulp.src(['./node_modules/react/dist/react.min.js', './node_modules/react-dom/dist/react-dom.min.js'])
+        .pipe(gulp.dest(paths.DEST + '/app/'))
 })
 
 gulp.task('watch', function(){

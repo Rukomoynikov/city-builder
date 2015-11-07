@@ -27,19 +27,14 @@ var App = React.createClass({displayName: "App",
   },
   nextDay : function(){
       Lockr.set("food", this.state.food - this.state.population + (this.state.buildings[1].have * 1000) );
-      var hunger;
-      var placeless;
-      if (this.state.food <= 0){
-          this.addOrRemoveMessage("add", messages[0]);
-      } else {
-          this.addOrRemoveMessage("remove", messages[0]);
-      }
-      if (this.state.buildings[0].have < Math.round(this.state.population / 1000) ) {
-          this.addOrRemoveMessage("add", messages[1]);
-      } else {
-          this.addOrRemoveMessage("remove", messages[1]);
-      }
-      Lockr.set("population", this.state.population + 100);
+      var hunger = (this.state.food <= 0);
+      var placeless = (this.state.buildings[0].have < Math.round(this.state.population / 1000));
+
+
+      this.addOrRemoveMessage(hunger ?  "add" : "remove", messages[0]);
+      this.addOrRemoveMessage(placeless ? "add" : "remove", messages[1]);
+
+      Lockr.set("population", this.state.population + (placeless ? 0 : 100) );
       Lockr.set("gold", this.state.gold + this.state.population);
       this.setState({
           population : this.state.population + parseInt(this.state.population / 10),

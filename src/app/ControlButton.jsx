@@ -1,3 +1,5 @@
+var React = require('react');
+
 var ControlButton = React.createClass({
   componentWillMount : function(){
       'use strict';
@@ -14,3 +16,5 @@ var ControlButton = React.createClass({
     )
   }
 });
+
+module.exports = ControlButton

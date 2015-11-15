@@ -1,3 +1,7 @@
+var React = require('react');
+var Control = require('./Control.jsx');
+var ControlButton = require('./ControlButton.jsx')
+
 var ControlPanel = React.createClass({
     getInitialState: function(){
             return {
@@ -12,7 +16,6 @@ var ControlPanel = React.createClass({
       <div  className='ControlPanel'>
         <h4>Совет управления городом</h4>
         <Control title="Население города" value={this.props.population} />
-        {/*<Control title="Прирост населения" /> */}
         <Control title="Золото" value={this.props.gold} />
         <Control title="Еда" value={this.props.food} />
         <ControlButton value='Следующий день' nextDay={this.props.nextDay} />
@@ -20,3 +23,5 @@ var ControlPanel = React.createClass({
     )
   }
 });
+
+module.exports = ControlPanel

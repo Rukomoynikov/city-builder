@@ -1,3 +1,5 @@
+var React = require('react');
+
 var PeoplesControlPanel = React.createClass({
     render: function(){
 		return (
@@ -7,3 +9,5 @@ var PeoplesControlPanel = React.createClass({
 		)
     }
 });
+
+module.exports = PeoplesControlPanel

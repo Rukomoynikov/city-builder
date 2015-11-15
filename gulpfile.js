@@ -5,25 +5,29 @@ var jade = require('gulp-jade');
 var stylus = require('gulp-stylus');
 var ts = require('gulp-typescript');
 
+var browserify = require('browserify');
+var reactify = require('reactify');
+var source = require('vinyl-source-stream');
+
 var paths = {
     DEST : "./dist",
     SRC : "./src"
 }
 
 gulp.task("transform", function(){
-    'use strict';
-    gulp.src(paths.SRC + '/app/*.jsx')
-        .pipe(react())
-        .pipe(rename(function(file){
-            file.extname = ".js"
-        }))
-        .pipe(gulp.dest(paths.DEST + '/app/'))
-    gulp.src(paths.SRC + '/app/*.ts')
-        .pipe(ts()) 
-        .pipe(rename(function(file){
-            file.extname = ".js"
-        }))
-        .pipe(gulp.dest(paths.DEST + '/app/'))
+	return browserify({
+		entries: paths.SRC + '/app/App.jsx',
+		transform : reactify
+	})
+	.bundle()
+	.pipe(source('bundle.js'))
+	.pipe(gulp.dest(paths.DEST + '/app/'))
+    // gulp.src(paths.SRC + '/app/*.jsx')
+    //     .pipe(react())
+    //     .pipe(rename(function(file){
+    //         file.extname = ".js"
+    //     }))
+    //     .pipe(gulp.dest(paths.DEST + '/app/'))
 });
 
 gulp.task('jade', function(){

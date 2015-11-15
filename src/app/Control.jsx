@@ -1,3 +1,5 @@
+var React = require('react');
+
 var Control = React.createClass({
   getInitialState : function(){
       return {
@@ -13,3 +15,5 @@ var Control = React.createClass({
     )
   }
 });
+
+module.exports = Control

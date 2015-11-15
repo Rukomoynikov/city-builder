@@ -1,3 +1,5 @@
+var React = require('react');
+
 var MessagePanel = React.createClass({
     getInitialState: function(){
         return {
@@ -20,3 +22,5 @@ var MessagePanel = React.createClass({
     )
   }
 });
+
+module.exports = MessagePanel

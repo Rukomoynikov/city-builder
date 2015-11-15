@@ -1,3 +1,5 @@
+var React = require('react');
+
 var Message = React.createClass({
     getInitialState: function(){
         return {
@@ -13,3 +15,5 @@ var Message = React.createClass({
     )
   }
 });
+
+module.exports = Message

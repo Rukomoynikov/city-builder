@@ -1,3 +1,5 @@
+var React = require('react');
+
 var Tab = React.createClass({
     render : function(){
         var classActive = this.props.active ? "Tab Tab--active" : "Tab"
@@ -24,3 +26,5 @@ var Tabs = React.createClass({
         )
     }
 })
+
+module.exports = Tabs

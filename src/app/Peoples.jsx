@@ -1,10 +1,14 @@
+var React = require("react")
+
 var Peoples = React.createClass({
-	var peoples = this.props.peoples.map(function(people){
-		return (<People name={people.name} />)
-	})
     render: function(){
+		var peoples = this.props.peoples.map(function(people){
+			return (<People name={people.name} key={people.id} />)
+		}.bind(this))
 		return(
-			{peoples}
+			<div>
+				{peoples}
+			</div>
 		)
     }
 });
@@ -20,6 +24,7 @@ var People = React.createClass({
 	}
 });
 
+module.exports = Peoples;
 /*
 			<br />
 			<br />

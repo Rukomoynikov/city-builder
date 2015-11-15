@@ -1,3 +1,7 @@
+var React = require('react');
+var Building = require('./Building.jsx')
+var MessagePanel = require('./MessagePanel.jsx')
+
 var CityBuildings = React.createClass({
     getInitialState : function(){
         return {
@@ -19,3 +23,5 @@ var CityBuildings = React.createClass({
         )
     }
 });
+
+module.exports = CityBuildings

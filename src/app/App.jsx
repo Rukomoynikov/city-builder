@@ -1,5 +1,16 @@
 Parse.initialize("OhVWSWcLTb3KrSdHFXKbDawVCKVLyeE63tEusAdQ", "fgfPJ0vlpewRJp0TXEUKpYC2aYkILjNFfd1QbbHO");
 
+// Vendor Libs
+var Lockr = require("lockr")
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+// Components
+var Tabs = require('./Tabs.jsx');
+var CityBuildings = require('./CityBuildings.jsx');
+var ControlPanel = require('./ControlPanel.jsx');
+var Peoples = require('./Peoples.jsx');
+var PeoplesControlPanel = require('./PeoplesControlPanel.jsx');
 
 var App = React.createClass({
   getInitialState : function(){
@@ -13,7 +24,7 @@ var App = React.createClass({
           placeless : Lockr.get('placeless') || false,
           messages : Lockr.get('messages') || [],
           tabs : tabs,
-          peoples : peoples 
+          peoples : peoples
       }
   },
   render: function(){
@@ -95,7 +106,7 @@ var App = React.createClass({
       })
   },
   enableTab : function(id){
-    
+
   }
 });
 

@@ -1,3 +1,5 @@
+var React = require('react');
+
 var Building = React.createClass({
     build : function(){
 
@@ -21,3 +23,5 @@ var Building = React.createClass({
         this.props.build(this.props.id)
     }
 });
+
+module.exports = Building

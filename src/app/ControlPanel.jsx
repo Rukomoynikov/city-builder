@@ -14,7 +14,7 @@ var ControlPanel = React.createClass({
     'use strict';
     return (
       <div  className='ControlPanel'>
-        <h4>Совет управления городом</h4>
+        <h5>Совет управления городом</h5>
         <Control title="Население города" value={this.props.population} />
         <Control title="Золото" value={this.props.gold} />
         <Control title="Еда" value={this.props.food} />

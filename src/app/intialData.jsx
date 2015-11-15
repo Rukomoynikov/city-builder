@@ -108,3 +108,10 @@ var peoples = [
         name : "Сергей Викторович"
     }
 ]
+
+module.exports = {
+	peoples : peoples,
+	buildings : buildings,
+	messages : messages,
+	tabs : tabs
+}

@@ -1,4 +1,5 @@
 var React = require('react');
+var Message = require('./Message.jsx')
 
 var MessagePanel = React.createClass({
     getInitialState: function(){

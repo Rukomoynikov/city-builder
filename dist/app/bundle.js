@@ -19179,6 +19179,10 @@ var CityBuildings = require('./CityBuildings.jsx');
 var ControlPanel = require('./ControlPanel.jsx');
 var Peoples = require('./Peoples.jsx');
 var PeoplesControlPanel = require('./PeoplesControlPanel.jsx');
+var Message = require('./Message.jsx');
+
+// Initial Data
+var initialData = require('./intialData.jsx')
 
 var App = React.createClass({displayName: "App",
   getInitialState : function(){
@@ -19186,25 +19190,41 @@ var App = React.createClass({displayName: "App",
           population: Lockr.get('population') || 1000,
           food: Lockr.get('food') || 1000, // 10% от популяции в день
           gold : Lockr.get('gold') || 1000, // Один человек приносит 1 золото в день, но каждый человек требует 1 еду в день
-          buildings : Lockr.get('buildings') || buildings,
+          buildings : Lockr.get('buildings') || initialData.buildings,
           year : Lockr.get('year') || 2015,
           hunger : Lockr.get('hunger') || false,
           placeless : Lockr.get('placeless') || false,
           messages : Lockr.get('messages') || [],
-          tabs : tabs,
-          peoples : peoples
+          tabs : initialData.tabs,
+          enabledTab : Lockr.get('enabledTab') || "city",
+          peoples : initialData.peoples,
+          daysCount : Lockr.get('daysCount') || 0
       }
   },
   render: function(){
+  	var activeComponents;
+  	switch (this.state.enabledTab){
+  		case 'people':
+  		activeComponents = (
+  			React.createElement("div", null, 
+		        React.createElement(Peoples, {active: false, peoples: this.state.peoples, tabId: "people", enabledTab: this.state.enabledTab}), 
+		        React.createElement(PeoplesControlPanel, {tabId: "city", enabledTab: this.state.enabledTab})
+        	))
+  		break;
+  		case 'city':
+  		activeComponents = (React.createElement("div", null, 
+		        React.createElement(CityBuildings, {buildings: this.state.buildings, build: this.build, messages: this.state.messages, tabId: "city", enabledTab: this.state.enabledTab}), 
+	        	React.createElement(ControlPanel, {population: this.state.population, food: this.state.food, gold: this.state.gold, nextDay: this.nextDay, tabId: "city", enabledTab: this.state.enabledTab})
+        	))
+  		break;
+  	}
+
     return (
       React.createElement("div", null, 
         React.createElement(Tabs, {tabs: this.state.tabs, enableTab: this.enableTab}), 
-        React.createElement(CityBuildings, {buildings: this.state.buildings, build: this.build, messages: this.state.messages, active: true}), 
-        React.createElement(ControlPanel, {population: this.state.population, food: this.state.food, gold: this.state.gold, nextDay: this.nextDay, active: true}), 
-        React.createElement(Peoples, {active: false, peoples: this.state.peoples}), 
-        React.createElement(PeoplesControlPanel, {active: false}), 
+        activeComponents, 
         React.createElement("hr", null), 
-        React.createElement("button", {onClick: this.startNewGame}, "Начать новую игру")
+        "Прошло дней: ", this.state.daysCount, " ", React.createElement("button", {onClick: this.startNewGame}, "Начать новую игру")
       )
     )
   },
@@ -19220,16 +19240,21 @@ var App = React.createClass({displayName: "App",
         }
       }.bind(this))()
 
-      this.addOrRemoveMessage(hunger ?  "add" : "remove", messages[0]);
-      this.addOrRemoveMessage(placeless ? "add" : "remove", messages[1]);
+      this.addOrRemoveMessage(hunger ?  "add" : "remove", initialData.messages[0]);
+      this.addOrRemoveMessage(placeless ? "add" : "remove", initialData.messages[1]);
 
       Lockr.set("population", this.state.population + populationAdding);
       Lockr.set("gold", this.state.gold + this.state.population);
+        Lockr.set("daysCount", this.state.daysCount++);
+
       this.setState({
           population : this.state.population + populationAdding,
           gold : this.state.gold + this.state.population,
-          food : this.state.food - this.state.population + (this.state.buildings[1].have * 1000)
+          food : this.state.food - this.state.population + (this.state.buildings[1].have * 1000),
+          daysCount : this.state.daysCount++
       })
+
+
   },
   addOrRemoveMessage : function(action, message){
       if (action === "add") {
@@ -19264,23 +19289,27 @@ var App = React.createClass({displayName: "App",
       Lockr.rm("gold");
       Lockr.rm("food");
       Lockr.rm("buildings");
+      Lockr.rm("enabledTab");
 
       this.setState({
           population: 1000,
           food: 1000,
           gold : 1000,
-          buildings: buildings,
+          buildings: initialData.buildings,
           messages : []
       })
   },
   enableTab : function(id){
-
+  	Lockr.set('enabledTab', id)
+  	this.setState({
+  		enabledTab : id
+  	})
   }
 });
 
 ReactDOM.render(React.createElement(App, null), document.querySelector('#app'))
 
-},{"./CityBuildings.jsx":162,"./ControlPanel.jsx":165,"./Peoples.jsx":167,"./PeoplesControlPanel.jsx":168,"./Tabs.jsx":169,"lockr":2,"react":159,"react-dom":3}],161:[function(require,module,exports){
+},{"./CityBuildings.jsx":162,"./ControlPanel.jsx":165,"./Message.jsx":166,"./Peoples.jsx":168,"./PeoplesControlPanel.jsx":169,"./Tabs.jsx":170,"./intialData.jsx":171,"lockr":2,"react":159,"react-dom":3}],161:[function(require,module,exports){
 var React = require('react');
 
 var Building = React.createClass({displayName: "Building",
@@ -19315,30 +19344,30 @@ var Building = require('./Building.jsx')
 var MessagePanel = require('./MessagePanel.jsx')
 
 var CityBuildings = React.createClass({displayName: "CityBuildings",
-    getInitialState : function(){
-        return {
-            buildings : this.props.buildings,
-            messages : this.props.messages
-        }
-    },
-    render: function(){
-      var buildings = this.props.buildings.map(function(element){
-          return (
-              React.createElement(Building, {name: element.name, key: element.id, cost: element.cost, have: element.have, build: this.props.build, id: element.id})
-          )
-      }.bind(this))
-        return (
-          React.createElement("div", {className: "CityBuildings"}, 
-            React.createElement(MessagePanel, {messages: this.props.messages}), 
-            buildings
-          )
-        )
-    }
+	getInitialState : function(){
+		return {
+			buildings : this.props.buildings,
+			messages : this.props.messages,
+		}
+	},
+	render: function(){
+		var buildings = this.props.buildings.map(function(element){
+			return (
+				React.createElement(Building, {name: element.name, key: element.id, cost: element.cost, have: element.have, build: this.props.build, id: element.id})
+				)
+		}.bind(this))
+		return (
+			React.createElement("div", {className: "CityBuildings col cols8"}, 
+			React.createElement(MessagePanel, {messages: this.props.messages}), 
+			buildings
+			)
+		)
+	}
 });
 
 module.exports = CityBuildings
 
-},{"./Building.jsx":161,"./MessagePanel.jsx":166,"react":159}],163:[function(require,module,exports){
+},{"./Building.jsx":161,"./MessagePanel.jsx":167,"react":159}],163:[function(require,module,exports){
 var React = require('react');
 
 var Control = React.createClass({displayName: "Control",
@@ -19398,7 +19427,7 @@ var ControlPanel = React.createClass({displayName: "ControlPanel",
     'use strict';
     return (
       React.createElement("div", {className: "ControlPanel"}, 
-        React.createElement("h4", null, "Совет управления городом"), 
+        React.createElement("h5", null, "Совет управления городом"), 
         React.createElement(Control, {title: "Население города", value: this.props.population}), 
         React.createElement(Control, {title: "Золото", value: this.props.gold}), 
         React.createElement(Control, {title: "Еда", value: this.props.food}), 
@@ -19412,6 +19441,28 @@ module.exports = ControlPanel
 
 },{"./Control.jsx":163,"./ControlButton.jsx":164,"react":159}],166:[function(require,module,exports){
 var React = require('react');
+
+var Message = React.createClass({displayName: "Message",
+    getInitialState: function(){
+        return {
+            messages : this.props.messages
+        }
+    },
+  render: function(){
+    'use strict';
+    return (
+      React.createElement("div", {className: 'Message--' + this.props.mood}, 
+        this.props.value
+      )
+    )
+  }
+});
+
+module.exports = Message
+
+},{"react":159}],167:[function(require,module,exports){
+var React = require('react');
+var Message = require('./Message.jsx')
 
 var MessagePanel = React.createClass({displayName: "MessagePanel",
     getInitialState: function(){
@@ -19438,7 +19489,7 @@ var MessagePanel = React.createClass({displayName: "MessagePanel",
 
 module.exports = MessagePanel
 
-},{"react":159}],167:[function(require,module,exports){
+},{"./Message.jsx":166,"react":159}],168:[function(require,module,exports){
 var React = require("react")
 
 var Peoples = React.createClass({displayName: "Peoples",
@@ -19478,7 +19529,7 @@ module.exports = Peoples;
 			<button onClick={this.sendToParent}>Нанять</button>
 */
 
-},{"react":159}],168:[function(require,module,exports){
+},{"react":159}],169:[function(require,module,exports){
 var React = require('react');
 
 var PeoplesControlPanel = React.createClass({displayName: "PeoplesControlPanel",
@@ -19493,7 +19544,7 @@ var PeoplesControlPanel = React.createClass({displayName: "PeoplesControlPanel",
 
 module.exports = PeoplesControlPanel
 
-},{"react":159}],169:[function(require,module,exports){
+},{"react":159}],170:[function(require,module,exports){
 var React = require('react');
 
 var Tab = React.createClass({displayName: "Tab",
@@ -19525,4 +19576,123 @@ var Tabs = React.createClass({displayName: "Tabs",
 
 module.exports = Tabs
 
-},{"react":159}]},{},[160]);
+},{"react":159}],171:[function(require,module,exports){
+var buildings= [
+    {
+        id : 1,
+        name : "Дом",
+        cost : 1000,
+        have : 0
+    },
+    {
+        id : 2,
+        name : "Ферма",
+        cost : 1000,
+        have : 0
+    },
+    {
+        id : 3,
+        name : "Таверна",
+        cost : 1000,
+        have : 0
+    },
+    {
+        id : 4,
+        name : "Космопорт",
+        cost : 1000,
+        have : 0
+    },
+    {
+        id : 5,
+        name : "Библиотека",
+        cost : 1000,
+        have : 0
+    },
+]
+
+var messages = [
+    {
+        id : "hunger",
+        text : "Жители города голодают, прирост населения остановлен и количество людей уменьшается на 10% каждый год. Постройте фермы.",
+        mood : "bad"
+    },
+    {
+        id : "placeless",
+        text : "Новым жителям негде жить, прирост населения остановлен. Постройте больше новых домов.",
+        mood : "bad"
+    },
+    {
+        id : "letterfromfuture",
+        text : "Ваш город посетили гости из будущего и увеличли прирост населения на 1%. Как им это удалось?",
+        mood : "good"
+    }
+]
+
+var tabs = [
+    {
+        id : "city",
+        name : "Город",
+        active : true
+    },
+    {
+        id : "people",
+        name : "Люди",
+        active : false
+    },
+    {
+        id : "science",
+        name : "Исследования",
+        active : false
+    },
+    {
+        id : "quest",
+        name : "Задания",
+        active : false
+    },
+    {
+        id : "profile",
+        name : "Профиль игрока",
+        active : false
+    }
+
+]
+
+var peoples = [
+    {
+        id : 1,
+        name : "Дарт Вейдер"
+    },
+    {
+        id : 2,
+        name : "Альберт Эйнштейн"
+    },
+    {
+        id : 3,
+        name : "Алёша Попович"
+    },
+    {
+        id : 4,
+        name : "Василиса Прекрасная"
+    },
+    {
+        id : 5,
+        name : "Форест Гамп"
+    },
+    {
+        id : 6,
+        name : "Лунтик"
+    },
+    {
+        id : 7,
+        name : "Сергей Викторович"
+    }
+]
+
+module.exports = {
+	peoples : peoples,
+	buildings : buildings,
+	messages : messages,
+	tabs : tabs
+}
+
+},{}]},{},[160]);

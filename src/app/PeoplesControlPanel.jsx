@@ -3,8 +3,8 @@ var React = require('react');
 var PeoplesControlPanel = React.createClass({
     render: function(){
 		return (
-		<div>
-		Панель управдения
+		<div className='ControlPanel'>
+		Панель управления
 		</div>
 		)
     }

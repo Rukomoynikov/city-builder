@@ -12,6 +12,8 @@ var ControlPanel = require('./ControlPanel.jsx');
 var Peoples = require('./Peoples.jsx');
 var PeoplesControlPanel = require('./PeoplesControlPanel.jsx');
 var Message = require('./Message.jsx');
+var Quests = require('./Quests.jsx')
+var QuestsPanel = require('./QuestsPanel.jsx')
 
 // Initial Data
 var initialData = require('./intialData.jsx')
@@ -49,11 +51,19 @@ var App = React.createClass({
 	        	<ControlPanel population={this.state.population} food={this.state.food} gold={this.state.gold} nextDay={this.nextDay}  tabId='city' enabledTab={this.state.enabledTab} />
         	</div>)
   		break;
+  // 		case 'science':
+
+  // 		break;
+  // 		case "quest":
+		// activeComponents = (<div>
+		// 		<Quests quests={this.state.quests} />
+		// 	</div>)
+  // 		break;
   	}
 
     return (
       <div>
-        <Tabs tabs={this.state.tabs} enableTab={this.enableTab} />
+        <Tabs tabs={this.state.tabs} enableTab={this.enableTab} enabledTab={this.state.enabledTab} />
         {activeComponents}
         <hr />
         Прошло дней: {this.state.daysCount} <button onClick={this.startNewGame}>Начать новую игру</button>

@@ -17,8 +17,8 @@ var CityBuildings = React.createClass({
 		}.bind(this))
 		return (
 			<div className='CityBuildings col cols8'>
-			<MessagePanel messages={this.props.messages} />
-			{buildings}
+				<MessagePanel messages={this.props.messages} />
+				{buildings}
 			</div>
 		)
 	}

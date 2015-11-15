@@ -2,7 +2,7 @@ var React = require('react');
 
 var Tab = React.createClass({
     render : function(){
-        var classActive = this.props.active ? "Tab Tab--active" : "Tab"
+        var classActive = this.props.id === this.props.enabledTab ? "Tab Tab--active" : "Tab"
         return (
             <span className={classActive} onClick={this.enableTab}>
                 {this.props.name}
@@ -17,7 +17,7 @@ var Tab = React.createClass({
 var Tabs = React.createClass({
     render : function(){
         var tabs = this.props.tabs.map(function(tab){
-            return (<Tab name={tab.name} active={tab.active} key={tab.id} enableTab={this.props.enableTab} id={tab.id} />)
+            return (<Tab name={tab.name} active={tab.active} key={tab.id} enableTab={this.props.enableTab} enabledTab={this.props.enabledTab} id={tab.id} />)
         }.bind(this))
         return (
             <div>

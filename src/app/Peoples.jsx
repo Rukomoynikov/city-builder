@@ -6,7 +6,7 @@ var Peoples = React.createClass({
 			return (<People name={people.name} key={people.id} />)
 		}.bind(this))
 		return(
-			<div>
+			<div className='Peoples'>
 				{peoples}
 			</div>
 		)

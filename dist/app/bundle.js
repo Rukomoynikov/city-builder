@@ -19180,6 +19180,8 @@ var ControlPanel = require('./ControlPanel.jsx');
 var Peoples = require('./Peoples.jsx');
 var PeoplesControlPanel = require('./PeoplesControlPanel.jsx');
 var Message = require('./Message.jsx');
+var Quests = require('./Quests.jsx')
+var QuestsPanel = require('./QuestsPanel.jsx')
 
 // Initial Data
 var initialData = require('./intialData.jsx')
@@ -19217,11 +19219,19 @@ var App = React.createClass({displayName: "App",
 	        	React.createElement(ControlPanel, {population: this.state.population, food: this.state.food, gold: this.state.gold, nextDay: this.nextDay, tabId: "city", enabledTab: this.state.enabledTab})
         	))
   		break;
+  // 		case 'science':
+
+  // 		break;
+  // 		case "quest":
+		// activeComponents = (<div>
+		// 		<Quests quests={this.state.quests} />
+		// 	</div>)
+  // 		break;
   	}
 
     return (
       React.createElement("div", null, 
-        React.createElement(Tabs, {tabs: this.state.tabs, enableTab: this.enableTab}), 
+        React.createElement(Tabs, {tabs: this.state.tabs, enableTab: this.enableTab, enabledTab: this.state.enabledTab}), 
         activeComponents, 
         React.createElement("hr", null), 
         "Прошло дней: ", this.state.daysCount, " ", React.createElement("button", {onClick: this.startNewGame}, "Начать новую игру")
@@ -19309,7 +19319,7 @@ var App = React.createClass({displayName: "App",
 
 ReactDOM.render(React.createElement(App, null), document.querySelector('#app'))
 
-},{"./CityBuildings.jsx":162,"./ControlPanel.jsx":165,"./Message.jsx":166,"./Peoples.jsx":168,"./PeoplesControlPanel.jsx":169,"./Tabs.jsx":170,"./intialData.jsx":171,"lockr":2,"react":159,"react-dom":3}],161:[function(require,module,exports){
+},{"./CityBuildings.jsx":162,"./ControlPanel.jsx":165,"./Message.jsx":166,"./Peoples.jsx":168,"./PeoplesControlPanel.jsx":169,"./Quests.jsx":170,"./QuestsPanel.jsx":171,"./Tabs.jsx":172,"./intialData.jsx":173,"lockr":2,"react":159,"react-dom":3}],161:[function(require,module,exports){
 var React = require('react');
 
 var Building = React.createClass({displayName: "Building",
@@ -19358,8 +19368,8 @@ var CityBuildings = React.createClass({displayName: "CityBuildings",
 		}.bind(this))
 		return (
 			React.createElement("div", {className: "CityBuildings col cols8"}, 
-			React.createElement(MessagePanel, {messages: this.props.messages}), 
-			buildings
+				React.createElement(MessagePanel, {messages: this.props.messages}), 
+				buildings
 			)
 		)
 	}
@@ -19498,7 +19508,7 @@ var Peoples = React.createClass({displayName: "Peoples",
 			return (React.createElement(People, {name: people.name, key: people.id}))
 		}.bind(this))
 		return(
-			React.createElement("div", null, 
+			React.createElement("div", {className: "Peoples"}, 
 				peoples
 			)
 		)
@@ -19535,8 +19545,8 @@ var React = require('react');
 var PeoplesControlPanel = React.createClass({displayName: "PeoplesControlPanel",
     render: function(){
 		return (
-		React.createElement("div", null, 
-		"Панель управдения"
+		React.createElement("div", {className: "ControlPanel"}, 
+		"Панель управления"
 		)
 		)
     }
@@ -19547,9 +19557,42 @@ module.exports = PeoplesControlPanel
 },{"react":159}],170:[function(require,module,exports){
 var React = require('react');
 
+var Quests = React.createClass({displayName: "Quests",
+	getInitialState : function(){
+
+	},
+	render : function(){
+		return (React.createElement("div", null, 
+				"111"
+		))
+	}
+})
+
+module.exports = Quests
+
+},{"react":159}],171:[function(require,module,exports){
+var React = require('react');
+
+var QuestsPanel = React.createClass({displayName: "QuestsPanel",
+	getInitialState : function(){
+		return {
+			quests : this.props.quests
+		}
+	},
+	render : function(){
+		return (React.createElement("div", null, 
+			"123sf"
+		))
+	}
+})
+
+},{"react":159}],172:[function(require,module,exports){
+var React = require('react');
+
 var Tab = React.createClass({displayName: "Tab",
     render : function(){
-        var classActive = this.props.active ? "Tab Tab--active" : "Tab"
+		console.log(this)
+        var classActive = this.props.id === this.props.enabledTab ? "Tab Tab--active" : "Tab"
         return (
             React.createElement("span", {className: classActive, onClick: this.enableTab}, 
                 this.props.name
@@ -19564,7 +19607,7 @@ var Tab = React.createClass({displayName: "Tab",
 var Tabs = React.createClass({displayName: "Tabs",
     render : function(){
         var tabs = this.props.tabs.map(function(tab){
-            return (React.createElement(Tab, {name: tab.name, active: tab.active, key: tab.id, enableTab: this.props.enableTab, id: tab.id}))
+            return (React.createElement(Tab, {name: tab.name, active: tab.active, key: tab.id, enableTab: this.props.enableTab, enabledTab: this.props.enabledTab, id: tab.id}))
         }.bind(this))
         return (
             React.createElement("div", null, 
@@ -19576,7 +19619,7 @@ var Tabs = React.createClass({displayName: "Tabs",
 
 module.exports = Tabs
 
-},{"react":159}],171:[function(require,module,exports){
+},{"react":159}],173:[function(require,module,exports){
 var buildings= [
     {
         id : 1,
@@ -19686,6 +19729,13 @@ var peoples = [
         id : 7,
         name : "Сергей Викторович"
     }
+]
+
+var quests = [
+	{
+		title : "Вырастить картфель",
+		description : "Бла бла бла"
+	}
 ]
 
 module.exports = {

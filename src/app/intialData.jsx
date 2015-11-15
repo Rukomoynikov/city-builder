@@ -109,6 +109,13 @@ var peoples = [
     }
 ]
 
+var quests = [
+	{
+		title : "Вырастить картфель",
+		description : "Бла бла бла"
+	}
+]
+
 module.exports = {
 	peoples : peoples,
 	buildings : buildings,
